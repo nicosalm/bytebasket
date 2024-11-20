@@ -85,6 +85,42 @@ flowchart LR
 - Product recommendations
 - Transaction monitoring
 
+## Project Structure
+```
+bytebasket/
+├── README.md
+├── docker-compose.yml
+├── requirements.txt
+├── config/
+│   ├── kafka.yml
+│   ├── spark.yml
+│   └── cassandra.yml
+├── src/
+│   ├── producers/
+│   │   ├── __init__.py
+│   │   ├── user_events.py
+│   │   ├── cart_events.py
+│   │   └── transaction_events.py
+│   ├── processors/
+│   │   ├── __init__.py
+│   │   ├── stream_processor.py
+│   │   ├── fraud_detector.py
+│   │   └── recommender.py
+│   ├── storage/
+│   │   ├── __init__.py
+│   │   ├── cassandra_client.py
+│   │   └── hdfs_client.py
+│   └── analytics/
+│       ├── __init__.py
+│       └── metrics.py
+├── tests/
+│   ├── test_producers.py
+│   ├── test_processors.py
+│   └── test_storage.py
+└── notebooks/
+    └── analysis.ipynb
+```
+
 ## Setup
 [TODO]
 
