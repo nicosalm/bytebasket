@@ -1,5 +1,4 @@
 # ByteBasket
-
 A distributed data pipeline demonstrating real-time processing and analytics of e-commerce events using modern big data technologies.
 
 ```mermaid
@@ -85,12 +84,45 @@ flowchart LR
 - Product recommendations
 - Transaction monitoring
 
+## Setup and Development
+
+### Prerequisites
+- Python 3.12+
+- Docker & Docker Compose
+- uv package manager
+
+### Project Initialization
+```bash
+# Create new project
+uv init bytebasket
+cd bytebasket
+
+# Install dependencies
+uv add kafka-python==2.0.2
+uv add pyspark
+uv add cassandra-driver
+uv add grpcio-tools==1.66.1
+uv add protobuf==5.27.2
+uv add pytest
+```
+
+### Kafka Setup
+```bash
+# Start Kafka cluster (KRaft mode)
+docker compose up -d
+
+# Verify Kafka cluster status
+docker exec kafka1 kafka-topics.sh --bootstrap-server localhost:9092 --list
+```
+
 ## Project Structure
 ```
 bytebasket/
-├── README.md
+├── .venv/
+├── .python-version
+├── pyproject.toml
+├── uv.lock
 ├── docker-compose.yml
-├── requirements.txt
 ├── config/
 │   ├── kafka.yml
 │   ├── spark.yml
@@ -121,8 +153,24 @@ bytebasket/
     └── analysis.ipynb
 ```
 
-## Setup
-[TODO]
+### Kafka Configuration
+- 4 partitions per topic (scalable)
+- Replication factor: 1 (development) / 3 (production)
+- Key-based partitioning for user consistency
+- Exactly-once semantics enabled
+
+### Development Guidelines
+1. All messages use Protocol Buffers serialization
+2. Producers must enable idempotence and `acks=all`
+3. Consumers implement at-least-once processing
+4. Use atomic writes for output files
 
 ## Development Status
 Proof-of-concept project demonstrating distributed systems architecture.
+
+## Production Considerations
+- Increase replication factor to 3
+- Enable SSL/TLS encryption
+- Implement proper ACLs
+- Configure message retention policies
+- Set up monitoring and alerting
